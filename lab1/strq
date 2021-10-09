@@ -1,8 +1,7 @@
 #!/bin/bash
 
 read s
-str=""
-str+="$s"
+str="$s"
 
 while [[ $s != "q" ]]
 do
