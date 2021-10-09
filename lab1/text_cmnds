@@ -1,0 +1,23 @@
+#!/bin/bash
+
+echo "1 - nano, 2 - vi, 3 - links, 4 - exit"
+while true
+  do
+  read cmnd
+  case $cmnd in
+    1)
+      nano
+      ;;
+    2)
+      vi
+      ;;
+    3)
+      links
+      ;;
+    4)
+      exit
+      ;;
+    *)
+      echo "unknown command"
+  esac
+done

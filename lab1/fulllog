@@ -1,0 +1,8 @@
+#!/bin/bash
+
+file="full.log"
+
+bash make_file "$file"
+cat /var/log/anaconda/X.log | awk '/\(WW\)/ {sub(/\(WW\)/,"Warning:"); print $0}' >> "$file"
+cat /var/log/anaconda/X.log | awk '/\(II\)/ {sub(/\(II\)/,"Information:"); print $0}' >> "$file"
+cat $file

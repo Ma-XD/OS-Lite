@@ -1,0 +1,4 @@
+#!/bin/bash
+
+man bash | grep -E -o -w '\S{4}*' | sort | uniq -c | sort -n | tail -n 3 | awk '{print "word: "$2", count="$1}'
+

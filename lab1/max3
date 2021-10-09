@@ -1,0 +1,4 @@
+#!/bin/bash
+(( max3 = $1 > $2 ? $1 : $2))
+(( max3 = max3 > $3 ? max3 : $3))
+echo $max3 

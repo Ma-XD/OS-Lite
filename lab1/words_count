@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+grep -E -r -c "*\.log" /var/log/ | awk -F: '{print $0; sum = sum+$2}; END {print "sum="sum}'
+

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+file="emails.lst"
+
+bash make_file "$file"
+
+grep -E -r -o '([a-zA-Z0-9_\-\.]+)@([a-z]+)\.([a-z]+)' /etc | awk -F: '{print $2}' > "$file"
+#cat $file
