@@ -4,5 +4,5 @@ file="emails.lst"
 
 bash make_file "$file"
 
-grep -E -r -o '([a-zA-Z0-9_\-\.]+)@([a-z]+)\.([a-z]+)' /etc | awk -F: '{print $2}' > "$file"
+grep -E -r -o '([a-zA-Z0-9_\-\.]+)@([a-z]+)\.([a-z]+)' /etc | awk -F: '{if ($2 != "") str=str$2", "}; END {print str}' > "$file"
 #cat $file

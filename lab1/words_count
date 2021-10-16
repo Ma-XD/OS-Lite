@@ -1,5 +1,5 @@
 #!/bin/bash
 
 
-grep -E -r -c "*\.log" /var/log/ | awk -F: '{print $0; sum = sum+$2}; END {print "sum="sum}'
+find /var/log/ -name "*\.log" -exec cat {} \; | wc -l | awk '{print $0; sum = sum+$0}; END {print "sum="sum}'
 
