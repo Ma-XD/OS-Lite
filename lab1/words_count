@@ -1,5 +1,0 @@
-#!/bin/bash
-
-
-find /var/log/ -name "*\.log" -exec cat {} \; | wc -l | awk '{print $0; sum = sum+$0}; END {print "sum="sum}'
-
