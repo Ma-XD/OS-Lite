@@ -1,4 +1,10 @@
 #!/bin/bash
-(( max3 = $1 > $2 ? $1 : $2))
-(( max3 = max3 > $3 ? max3 : $3))
-echo $max3 
+if [ $# != 3 ]
+then
+echo "Illegal number of arguments. Expected 3" 
+exit 1
+fi
+
+max=$(echo "if ($1 > $2) { $1 } else { $2 } " | bc -l)
+max=$(echo "if ($3 > $max) { $3 } else { $max } " | bc -l)
+echo $max
