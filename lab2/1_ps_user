@@ -4,4 +4,4 @@ file="user.pc"
 
 bash ../lab1/make_file "$file"	
 
-ps x u | awk -v user=$USER '$1 == user {cnt+=1; str=str$2":"$11"\n"}; END {print cnt"\n"str}' >> "$file"
+ps aux | awk -v user=$USER '$1 == user {cnt+=1; str=str$2":"$11"\n"}; END {print cnt"\n"str}' >> "$file"
