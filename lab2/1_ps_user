@@ -1,0 +1,7 @@
+#!/bin/bash
+
+file="user.pc"
+
+bash ../lab1/make_file "$file"	
+
+ps u | awk '$1 ~ /user/ {cnt+=1; str=str$2":"$11"\n"}; END {print cnt"\n"str}' >> "$file"
