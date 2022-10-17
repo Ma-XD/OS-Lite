@@ -1,0 +1,9 @@
+#!/bin/bash
+
+file="sbin.ps"
+
+bash ../lab1/make_file "$file"	
+
+ps -e -o pid,command | awk '$2 ~ /\/sbin\// {print $1}' >> "$file"
+
+ 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-file="user.pc"
+file="user.ps"
 
 bash ../lab1/make_file "$file"	
 
-ps aux | awk -v user=$USER '$1 == user {cnt+=1; str=str$2":"$11"\n"}; END {print cnt"\n"str}' >> "$file"
+ps U $USER | awk '{cnt+=1; str=str$1":"$5"\n"}; END {print cnt"\n"str}' >> "$file"

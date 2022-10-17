@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ps -e u --sort=lstart | tail -1 | awk '{print $2}'
