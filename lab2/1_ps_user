@@ -1,6 +1,6 @@
 #!/bin/bash
 
-file="user.ps"
+file="user.txt"
 
 bash ../lab1/make_file "$file"	
 

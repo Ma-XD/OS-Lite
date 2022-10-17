@@ -1,6 +1,6 @@
 #!/bin/bash
 
-file="sbin.ps"
+file="sbin.txt"
 
 bash ../lab1/make_file "$file"	
 

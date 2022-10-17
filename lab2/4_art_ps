@@ -1,6 +1,6 @@
 #!/bin/bash
 
-file="art.ps"
+file="art.txt"
 ans=""
 
 bash ../lab1/make_file "$file"	
