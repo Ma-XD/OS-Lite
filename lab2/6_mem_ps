@@ -2,19 +2,14 @@
 
 max=0
 
-for pid in $(ls /proc | grep "[0-9]\+")
+for pid in $(ls /proc | grep -o "[0-9]\+")
 do
-if [[ -e /proc/$pid/status ]]
-then
-
-rss=$(cat /proc/$pid/status | grep -E "VmRSS:" | grep -E -o "[0-9]+")
-	
-if [[ "$rss" != "" ]]
-then
-max=$(echo "if ($max < $rss) { $rss } else { $max } " | bc -l)
-fi
-
-fi
+ 
+  rss=$(cat /proc/$pid/status 2> /dev/null | grep -E "VmRSS:" | grep -o "[0-9]\+")
+  if [[ "$rss" != "" ]]
+  then
+      max=$(echo "if ($max < $rss) { $rss } else { $max } " | bc -l)
+  fi
 done
 
 echo $max

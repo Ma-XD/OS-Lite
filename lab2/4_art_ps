@@ -7,15 +7,15 @@ bash ../lab1/make_file "$file"
 
 for pid in $(ls /proc | grep "[0-9]\+")
 do
-if [[ -e /proc/$pid/status ]]
-then
-ppid=$(cat /proc/$pid/status | awk '$1 ~ /PPid:/ {print $2}')
-ser=$(cat /proc/$pid/sched | awk '$1 ~ /sum_exec_runtime/ {print $3}' )
-nrs=$(cat /proc/$pid/sched | awk '$1 ~ /nr_switches/ {print $3}')
-art=$(echo "$ser/$nrs" | bc -l | sed -e 's/^\./0./')	
-
-ans=$ans$pid" "$ppid" "$art"\n"
-fi
+    ppid=$(cat /proc/$pid/status 2> /dev/null | awk '$1 ~ /PPid:/ {print $2}' )
+    ser=$(cat /proc/$pid/sched 2> /dev/null | awk '$1 ~ /sum_exec_runtime/ {print $3}' )
+    nrs=$(cat /proc/$pid/sched 2> /dev/null | awk '$1 ~ /nr_switches/ {print $3}')
+    if [[ "$ppid" != "" && "$ser" != "" && "$nrs" != "" ]]
+    then
+      art=$(echo "$ser/$nrs" | bc -l | sed -e 's/^\./0./')	
+      ans=$ans$pid" "$ppid" "$art"\n"  
+    fi
+    
 done
 
 echo -e $ans | sort -nk2 | awk '$1 != "" {print "ProcessID="$1" : Parent_ProcessID="$2" : Average_Running_Time="$3}' >> "$file"
