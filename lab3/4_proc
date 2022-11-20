@@ -1,0 +1,18 @@
+#!/bin/bash
+
+nice -n 20 bash while_true &
+pid1=$!
+nice -n 10 bash while_true &
+pid2=$!
+nice -n 11 bash while_true &
+pid3=$!
+
+{
+sleep 1m
+kill $pid1
+kill $pid2
+} &
+
+
+
+

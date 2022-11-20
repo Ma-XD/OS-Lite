@@ -1,0 +1,6 @@
+#!/bin/bash
+
+crontab -l > temp
+echo "*/5 * * * 2 bash ~/OS-Lite/lab3/1_test" >> temp
+crontab temp
+rm temp

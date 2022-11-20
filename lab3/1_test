@@ -1,0 +1,13 @@
+#!/bin/bash
+
+dt=$(date +%Y-%m-%d_%H-%M-%S)
+
+
+echo Trying to make dir ~/test
+mkdir ~/test 2> /dev/null && {
+echo catalog test was created successfully >> ~/report
+touch ~/test/$dt
+}
+
+echo Trying to ping www.net_nikogo.ru
+ping www.net_nikogo.ru 2> /dev/null || echo $(date +%Y-%m-%d_%H-%M-%S) Error >> ~/report

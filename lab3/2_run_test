@@ -1,0 +1,5 @@
+#!/bin/bash
+
+at -m now + 62 minutes < 1_test
+
+tail -f ~/report
