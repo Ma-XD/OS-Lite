@@ -1,0 +1,34 @@
+#!/bin/bash
+
+res=1
+op="+"
+
+(tail -f pipe) |
+while true
+do
+  echo Current number is "$res", operation is "$op"
+  echo Waiting for input...
+  read line
+
+  case $line in
+  "+")
+    op="$line"
+    ;;
+  "*")
+    op="$line"
+    ;;
+  [0-9]*)
+    res=$(($res $op $line))
+    ;;
+  QUIT)
+    echo "exit"
+    killall tail
+    exit
+    ;;
+  *)
+    echo "Incorrect input"
+    killall tail
+    exit 1
+    ;;
+  esac
+done

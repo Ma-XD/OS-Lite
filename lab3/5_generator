@@ -1,0 +1,19 @@
+#!/bin/bash
+
+while true
+do
+  read line
+  echo "$line" > pipe
+
+  case $line in
+  QUIT)
+    exit
+    ;;
+  "+" | "*" | [0-9]*)
+    :
+    ;; 
+  *)
+    exit 1
+    ;;   
+  esac
+done

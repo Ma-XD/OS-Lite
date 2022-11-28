@@ -1,0 +1,46 @@
+#!/bin/bash
+
+res=1
+op="+"
+
+echo $$ > .pid
+
+usr1()
+{
+  op="+"
+}
+trap 'usr1' USR1
+
+usr2()
+{
+  op="*"
+}
+trap 'usr2' USR2
+
+sigterm()
+{
+  op="exit"
+}
+trap 'sigterm' SIGTERM
+
+while true
+do
+  echo Current number is "$res"
+
+  case $op in
+  "+")
+    echo "+ 2"
+    res=$((res + 2))
+    ;;
+  "*")
+    echo "* 2"
+    res=$((res * 2))
+    ;;
+  "exit")
+    echo "exit"
+    exit
+    ;;
+  esac
+  
+  sleep 1
+done
