@@ -11,28 +11,31 @@ log=~/.trash.log
 
 while read line
 do
-full_name=$(echo $line | awk '{print $1}')
-name=$(basename $full_name)
-in_trash=$(echo $line | awk '{print $2}')
+  full_name=$(echo $line | awk '{print $1}')
+  name=$(basename $full_name)
+  in_trash=$(echo $line | awk '{print $2}')
 
-if [[ "$1" == "$name" && -e "$in_trash" ]]
-then
+  if [[ "$1" != "$name" || ! -e "$in_trash" ]]
+  then
+    continue
+  fi
+  
   echo Found $in_trash. Restore it? "(y/n)"
   read act < /dev/tty
-  
+
   if [[ "$act" == "y" ]]
   then
     dir=$(dirname $full_name)
-    
+
     if [[ ! -d "$dir" ]]
     then
       dir=~
     fi
-    
+
     echo Trying restore file to $dir  ...
-    
+
     new="$dir/$1"
-    
+
     while true 
     do
       if [[ -e "$new" ]]
@@ -44,13 +47,12 @@ then
         break  
       fi
     done
-    
+
     ln $in_trash $new
     rm $in_trash
-    
+
     echo File $new restored
   fi
-fi
 done < $log
 
  
