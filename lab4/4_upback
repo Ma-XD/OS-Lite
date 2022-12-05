@@ -1,0 +1,29 @@
+#!/bin/bash
+
+restore=~/restore
+if [[ ! -d "$restore" ]]
+then
+  echo Creating $restore
+  mkdir $restore
+fi
+
+lst_bckp=$(ls ~ | grep -E "Backup-[0-9]{4}-[0-9]{2}-[0-9]{2}" | sort -n | tail -1)
+
+if [[ -z "$lst_bckp" ]]
+then
+  echo Last backup dir not found
+  exit 1
+fi
+
+echo Restoring...
+
+for file in $(ls ~/$lst_bckp)
+do
+  if [[ $file =~ \.[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]
+  then
+    continue
+  fi
+  cp ~/$lst_bckp/$file $restore/$file
+done
+
+echo Restoring ends

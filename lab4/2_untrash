@@ -9,7 +9,7 @@ fi
 trash=~/.trash
 log=~/.trash.log
 
-while read line
+while read -u 3 line
 do
   full_name=$(echo $line | awk '{print $1}')
   name=$(basename $full_name)
@@ -21,7 +21,7 @@ do
   fi
   
   echo Found $in_trash. Restore it? "(y/n)"
-  read act < /dev/tty
+  read act
 
   if [[ "$act" == "y" ]]
   then
@@ -53,7 +53,4 @@ do
 
     echo File $new restored
   fi
-done < $log
-
- 
-
+done 3< $log

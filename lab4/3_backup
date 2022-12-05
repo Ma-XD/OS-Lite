@@ -3,7 +3,7 @@
 source=~/source
 if [[ ! -d "$source" ]]
 then
-  echo Create "$source" with files
+  echo Create "$source" with some files
   exit 1
 fi
 
@@ -15,25 +15,28 @@ then
 fi
 
 dt=$(date +%Y-%m-%d)
-l_dt=$(ls ~ | grep -E "Backup-*" | sort -n | tail -1 | awk '{sub(/Backup-/,""); print $0}')
+lst_dt=$(ls ~ | grep -E "Backup-[0-9]{4}-[0-9]{2}-[0-9]{2}" | sort -n | tail -1 |
+awk '{sub(/Backup-/,"");print $0}') 
 
-dts=$(date -d $dt +%s)
-l_dts=$(date -d $l_dt +%s )
-dt_diff=$((($dts - $l_dts) / 60 / 60 / 24)) 
+if [[ ! -z "$lst_dt" ]]
+then
+  dts=$(date -d $dt +%s)
+  lst_dts=$(date -d $lst_dt +%s )
+  dt_diff=$((($dts - $lst_dts) / 60 / 60 / 24)) 
+fi
 
-if [[ "$dt_diff" -gt 7 ]]
+if [[ -z "$lst_dt" || "$dt_diff" -gt 7 ]]
 then
   echo Creating "Backup-$dt" >> $report
   mkdir ~/Backup-$dt
-  
   ls $source >> $report
   cp $source/* ~/Backup-$dt
 else
-  echo Updating "Backup-$l_dt" at $dt  >> $report
+  echo Updating "Backup-$lst_dt" at $dt  >> $report
 	
   for src_f in $(ls $source) 
   do
-    bckp_f=~/Backup-$l_dt/$src_f
+    bckp_f=~/Backup-$lst_dt/$src_f
     if [[ -f "$bckp_f" ]]
     then
       size_bckp_f=$(stat $bckp_f -c%s)
@@ -52,5 +55,3 @@ else
     fi
   done
 fi
-
-

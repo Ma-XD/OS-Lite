@@ -20,7 +20,7 @@ then
 fi
 
 num=1
-name=$1$num
+name=$1"."$num
     
 while true 
 do
@@ -29,13 +29,13 @@ do
     break
   else 
     num=$(($num + 1))
-    name=$1$num
+    name=$1"."$num
   fi
 done
 
 echo File name in trash is $name
 
-ln $1 "$trash/$1$num"
+ln $1 $trash/$1"."$num
 rm $1
 
 log=~/.trash.log
@@ -45,4 +45,4 @@ then
   touch $log
 fi
 
-echo $PWD/$1 $trash/$1$num >> $log
+echo $PWD/$1 $trash/$1"."$num >> $log
