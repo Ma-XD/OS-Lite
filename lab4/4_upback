@@ -26,4 +26,4 @@ do
   cp ~/$lst_bckp/$file $restore/$file
 done
 
-echo Restoring ends
+echo Restoring completed
