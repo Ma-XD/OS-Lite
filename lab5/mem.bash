@@ -2,14 +2,14 @@
 
 cnt=0
 arr=()
-echo > report.log
+echo > $PWD/report.log
 
 while true
 do
   shift=$(($cnt % 100000))
   if [[ $shift -eq 0 ]]
   then
-    echo ${#arr[*]} >> report.log
+    echo ${#arr[*]} >> $PWD/report.log
   fi
 
   size=${#arr[*]}
@@ -19,3 +19,5 @@ do
   done
   cnt=$((cnt + 1))
 done
+
+kill p
