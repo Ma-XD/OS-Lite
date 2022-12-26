@@ -214,7 +214,7 @@
 	      3 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_gp
 	      4 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_par+	
 	      
-___	      
+	___	      
 	      
 	  МиБ Mem :   3924,0 total,    104,2 free,   3638,3 used,    181,5 buff/cache
 	  МиБ Swap:   1710,0 total,     69,5 free,   1640,5 used.     58,4 avail Mem 
@@ -226,7 +226,7 @@ ___
 	      3 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_gp
 	      4 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_par+  
 	      
-___
+	___
 	  
 	  МиБ Mem :   3924,0 total,     98,0 free,   3744,1 used,     81,9 buff/cache
 	  МиБ Swap:   1710,0 total,      0,0 free,   1710,0 used.      2,3 avail Mem 
