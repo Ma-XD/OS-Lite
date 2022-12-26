@@ -6,19 +6,19 @@ echo this script pid is $$
 
 bash mem.bash &
 pid=$!
-cpulimit -l 50 -p $pid -b -q
 echo mem bash pid $pid
 
 while true
 do
-if [[ ! -d /proc/$pid ]] 
-then 
-  echo Упало
-  dmesg | tail -n 2 >> spy.report
-  cat report.log | tail -n 1 | awk '{print "\n\n arr_size="$1}' >> spy.report
-  exit 1
-fi  
-top -bn1 | head -n 12 >> spy.report
-echo -e "\n\n" >> spy.report
-sleep 1
+  if [[ ! -d /proc/$pid ]] 
+  then 
+    echo Упало
+    dmesg | tail -n 2 >> spy.report
+    cat report.log | tail -n 1 | awk '{print "\n\n arr_size="$1}' >> spy.report
+    exit 1
+  fi  
+  
+  top -bn1 | head -n 12 >> spy.report
+  echo -e "\n\n" >> spy.report
+  sleep 1
 done

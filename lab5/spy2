@@ -1,0 +1,28 @@
+#!/bin/bash
+
+echo > spy2.report
+
+echo this script pid is $$
+
+bash mem.bash &
+pid=$!
+bash mem2.bash &
+pid2=$!
+
+echo mem bash pid $pid
+echo mem2 bash pid $pid2
+
+while true
+do 
+  if [[ ! (-d /proc/$pid  || -d /proc/$pid2) ]] 
+  then 
+    echo Упало
+    dmesg | tail -n 2 >> spy2.report
+    cat report.log | tail -n 1 | awk '{print "\n\n arr1_size="$1}' >> spy2.report
+    cat report2.log | tail -n 1 | awk '{print "\n\n arr2_size="$1}' >> spy2.report
+    exit 1
+  fi  
+  top -bn1 | head -n 12 >> spy2.report
+  echo -e "\n\n" >> spy2.report
+  sleep 1
+done
