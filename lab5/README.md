@@ -106,9 +106,33 @@
 
 * arr2_size=**54000000** *для mem2.bash*
 
-#### Последние записи в системном журнале	  
+#### Последние записи в системном журнале
+
+	//для первого скрипта
+
+	[ 7937.559155] oom-kill:
+	constraint=CONSTRAINT_NONE,
+	nodemask=(null),
+	cpuset=/,
+	mems_allowed=0,
+	global_oom,
+	task_memcg=/user.slice/user-1000.slice/user@1000.service/app.slice/app-org.gnome.Terminal.slice/vte-spawn-99255371-09cb-41dc-8d3b-160560333b40.scope,
+	task=bash,pid=10710,
+	uid=0
+	
+	[ 7937.559170] Out of memory: Killed process 10710 (bash)
+	total-vm:2097492kB, 
+	anon-rss:1574488kB, 
+	file-rss:0kB, 
+	shmem-rss:0kB, 
+	UID:0 
+	pgtables:4124kB 
+	oom_score_adj:0
 	  
-	[ 4259.693623] oom-kill:
+	  
+	//и для второго
+	  
+	[ 8145.412821] oom-kill:
 	constraint=CONSTRAINT_NONE,
 	nodemask=(null),
 	cpuset=/,
@@ -116,114 +140,112 @@
 	global_oom,
 	task_memcg=/user.slice/user-1000.slice/user@1000.service/app.slice/app-org.gnome.Terminal.slice/vte-spawn-99255371-09cb-41dc-8d3b-160560333b40.scope,
 	task=bash,
-	pid=7650,
+	pid=10711,
 	uid=0
 	
-	[ 4259.693638] Out of memory: Killed process 7650 (bash) 
-	total-vm:4268496kB,
-	anon-rss:3110084kB,
+	[ 8145.412837] Out of memory: Killed process 10711 (bash)
+	total-vm:4091484kB,
+	anon-rss:3148492kB, 
 	file-rss:0kB, 
 	shmem-rss:0kB, 
 	UID:0 
-	pgtables:8376kB 
+	pgtables:8032kB 
 	oom_score_adj:0
 	
 #### Наблюдение за топ.
 
 * Со старта оба скрипта равномерно поедали память и находились в топе по нагрузке процессора
 
-	  МиБ Mem :   3924,0 total,    911,0 free,   1780,3 used,   1232,7 buff/cache
-	  МиБ Swap:   1710,0 total,   1649,3 free,     60,7 used.   1747,8 avail Mem 
+	  МиБ Mem :   3924,0 total,   2918,3 free,    756,8 used,    249,0 buff/cache
+	  МиБ Swap:   1710,0 total,   1019,4 free,    690,6 used.   2899,7 avail Mem 
 
 	    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-	   7649 root      20   0  370536 355488   3304 R 100,0   8,8   0:22.44 bash
-	   7650 root      20   0  363804 348600   3288 R  93,3   8,7   0:22.38 bash
-	      1 root      20   0  166756   8064   5192 S   0,0   0,2   0:01.75 systemd
-	      2 root      20   0       0      0      0 S   0,0   0,0   0:00.00 kthreadd
-	      3 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_gp
+	  10710 root      20   0   38160  23092   3284 R  86,7   0,6   0:01.28 bash
+	  10711 root      20   0   37368  22032   3280 R  86,7   0,5   0:01.29 bash
+	   6220 maxd      20   0 4774988 290276  90000 S  26,7   7,2   7:50.73 gnome-s+
+	   7270 maxd      20   0  942912 156172  30252 S   6,7   3,9   2:08.81 gedit
+	      1 root      20   0  166756   5284   2684 S   0,0   0,1   0:04.11 systemd
 
 * Как из в случае с первым экспериментом как только в физической памяти осталось 100 МиБ, скрипты начинали использовать раздел подкачки
 
-	  МиБ Mem :   3924,0 total,    115,3 free,   3375,4 used,    433,3 buff/cache
-	  МиБ Swap:   1710,0 total,   1614,2 free,     95,8 used.    183,2 avail Mem 
+	  МиБ Mem :   3924,0 total,    114,3 free,   3581,4 used,    228,3 buff/cache
+	  МиБ Swap:   1710,0 total,    995,2 free,    714,8 used.     83,4 avail Mem 
 
 	    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-	   7650 root      20   0 1184844   1,1g   1564 R 100,0  29,1   1:16.57 bash
-	   7649 root      20   0 1195932   1,1g   1932 R 100,0  29,3   1:16.15 bash
-	      1 root      20   0  166756   4884   2012 S   0,0   0,1   0:01.75 systemd
-	      2 root      20   0       0      0      0 S   0,0   0,0   0:00.00 kthreadd
-	      3 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_gp
+	  10711 root      20   0 1492140   1,4g   3220 R  57,1  36,8   1:42.37 bash
+	  10710 root      20   0 1508376   1,4g   3224 R  38,1  37,2   1:42.57 bash
+	   6220 maxd      20   0 4795152 319532 109780 S  28,6   8,0   8:02.68 gnome-s+
+	     91 root      20   0       0      0      0 S   9,5   0,0   5:21.23 kswapd0
+	    103 root       0 -20       0      0      0 I   9,5   0,0   0:03.23 kworker+
 
 * Когда закончилась память в разделе подкачки, повторилась ситуация с kswapd0
 
-	  МиБ Mem :   3924,0 total,    101,7 free,   3684,3 used,    138,1 buff/cache
-	  МиБ Swap:   1710,0 total,      0,0 free,   1710,0 used.      6,9 avail Mem 
+	  МиБ Mem :   3924,0 total,    107,8 free,   3727,1 used,     89,1 buff/cache
+	  МиБ Swap:   1710,0 total,      0,0 free,   1710,0 used.     11,8 avail Mem 
 
 	    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-	     91 root      20   0       0      0      0 R  88,2   0,0   3:20.89 kswapd0
-	   7649 root      20   0 2153196   1,4g    368 R  58,8  36,4   2:19.66 bash
-	   7650 root      20   0 2128644   1,4g    392 R  35,3  36,0   2:19.91 bash
-	   6332 maxd      20   0  964196  26876  11032 D   5,9   0,7   0:03.76 nautilus
-	   8024 root      20   0   21792   1600    844 R   5,9   0,0   0:00.01 top
+	     91 root      20   0       0      0      0 R  76,5   0,0   5:25.58 kswapd0
+	  10710 root      20   0 2083236   1,5g    400 R  58,8  38,8   2:24.27 bash
+	  10711 root      20   0 2069376   1,5g    376 R  47,1  39,2   2:24.92 bash
+	    414 systemd+  20   0   14988    228      0 S   5,9   0,0   0:43.52 systemd+
+	      1 root      20   0  166756   2540      0 S   0,0   0,1   0:04.11 systemd
 	   
 * С этого момента начались отличия: был убит только первый скрипт. Второй же продолжил жить, а память в обоих разделах немного освободилась
 
-	  МиБ Mem :   3924,0 total,   1509,1 free,   2236,1 used,    178,9 buff/cache
-	  МиБ Swap:   1710,0 total,    575,5 free,   1134,5 used.   1435,3 avail Mem 
+	  МиБ Mem :   3924,0 total,   1644,2 free,   2139,3 used,    140,5 buff/cache
+	  МиБ Swap:   1710,0 total,    311,3 free,   1398,7 used.   1577,7 avail Mem 
 
 	    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-	   7650 root      20   0 2144220   1,4g   1408 R 100,0  36,0   2:21.49 bash
-	      1 root      20   0  166756   4100   1224 S   0,0   0,1   0:01.77 systemd
+	  10711 root      20   0 2095908   1,4g   1444 R 100,0  36,7   2:28.03 bash
+	      1 root      20   0  166756   2516      0 S   0,0   0,1   0:04.12 systemd
 	      2 root      20   0       0      0      0 S   0,0   0,0   0:00.00 kthreadd
 	      3 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_gp
-	      4 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_par+
-
-* После этого память начала тратиться из раздела подкачки пока не достигла ~100 МиБ, затем перешла на основной физический раздел. (пиды другие, так как я потерял данные из предыдущего запуска, поэтому запустил экперимент заново, но сути это не поменяло)
-
-	  МиБ Mem :   3924,0 total,   1716,3 free,   1980,6 used,    227,2 buff/cache
-	  МиБ Swap:   1710,0 total,    108,2 free,   1601,8 used.   1686,9 avail Mem 
-
-	    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-	   9838 root      20   0 2104488   1,1g   1356 R  93,8  28,9   2:31.73 bash
-	      1 root      20   0  166756   6952   4396 S   0,0   0,2   0:04.05 systemd
-	      2 root      20   0       0      0      0 S   0,0   0,0   0:00.00 kthreadd
-	      3 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_gp
-	      4 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_par+	 
+	      4 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_par++	 
 	      
 * Повторение ситуации из первого эксперимента
 
-	  МиБ Mem :   3924,0 total,    103,6 free,   3587,2 used,    233,2 buff/cache
-	  МиБ Swap:   1710,0 total,    109,2 free,   1600,8 used.     77,3 avail Mem 
+	  МиБ Mem :   3924,0 total,   1493,5 free,   2280,2 used,    150,3 buff/cache
+	  МиБ Swap:   1710,0 total,    311,8 free,   1398,2 used.   1431,9 avail Mem 
 
 	    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-	   9838 root      20   0 3788148   2,7g   1588 R 100,0  70,8   4:23.34 bash
-	      1 root      20   0  166756   7340   4732 S   0,0   0,2   0:04.05 systemd
+	  10711 root      20   0 2254836   1,6g   1612 R 100,0  40,7   2:38.41 bash
+	      1 root      20   0  166756   2516      0 S   0,0   0,1   0:04.12 systemd
 	      2 root      20   0       0      0      0 S   0,0   0,0   0:00.00 kthreadd
 	      3 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_gp
 	      4 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_par+	
 	      
 	      
-	  МиБ Mem :   3924,0 total,    115,0 free,   3604,2 used,    204,8 buff/cache
-	  МиБ Swap:   1710,0 total,     27,0 free,   1683,0 used.     74,4 avail Mem 
+	  МиБ Mem :   3924,0 total,    104,2 free,   3638,3 used,    181,5 buff/cache
+	  МиБ Swap:   1710,0 total,     69,5 free,   1640,5 used.     58,4 avail Mem 
 
 	    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-	   9838 root      20   0 3890448   2,7g   1588 R 100,0  71,4   4:30.33 bash
-	      1 root      20   0  166756   7156   4556 S   0,0   0,2   0:04.05 systemd
+	  10711 root      20   0 3895068   2,9g   1612 R 100,0  75,2   4:25.97 bash
+	      1 root      20   0  166756   2476      0 S   0,0   0,1   0:04.12 systemd
 	      2 root      20   0       0      0      0 S   0,0   0,0   0:00.00 kthreadd
 	      3 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_gp
-	      4 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_par+   
+	      4 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_par+  
+	  
+	  МиБ Mem :   3924,0 total,     98,0 free,   3744,1 used,     81,9 buff/cache
+	  МиБ Swap:   1710,0 total,      0,0 free,   1710,0 used.      2,3 avail Mem 
+
+	    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+	     91 root      20   0       0      0      0 R  94,4   0,0   5:50.01 kswapd0
+	  10711 root      20   0 4069176   3,0g    380 R  66,7  77,8   4:38.00 bash
+	   6220 maxd      20   0 4787636 226120  43304 D   5,6   5,6   8:08.91 gnome-s+
+	      1 root      20   0  166756   2460      0 S   0,0   0,1   0:04.12 systemd
+	      2 root      20   0       0      0      0 S   0,0   0,0   0:00.00 kthreadd     
 	      
 * Теперь и второй скрипт был убит. Данные его последнего пребывания в топ:
 
-	  МиБ Mem :   3924,0 total,   1131,0 free,   2663,1 used,    130,0 buff/cache
-	  МиБ Swap:   1710,0 total,    996,6 free,    713,4 used.   1052,9 avail Mem 
+	  МиБ Mem :   3924,0 total,     83,8 free,   3760,8 used,     79,5 buff/cache
+	  МиБ Swap:   1710,0 total,      0,0 free,   1710,0 used.     19,6 avail Mem 
 
 	    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-	    669 root      20   0  948576   5240      0 S   5,7   0,1   0:32.92 snapd
-	   9838 root      20   0       0      0      0 R   5,7   0,0   4:43.51 bash
-	   6027 maxd      20   0   18004   1204      4 R   4,9   0,0   0:00.58 systemd
-	   6504 maxd      20   0  996604   1796      0 S   3,3   0,0   0:25.85 snap-st+
-	   6332 maxd      20   0  970928  38412  16168 S   1,6   1,0   0:17.40 nautilus
+	     91 root      20   0       0      0      0 R  16,9   0,0   6:30.54 kswapd0
+	    669 root      20   0  948576   5428      0 S  10,9   0,1   1:00.05 snapd
+	   6504 maxd      20   0  996604   2508      0 R   3,5   0,1   0:41.33 snap-st+
+	   8436 root      20   0       0      0      0 I   2,0   0,0   0:13.51 kworker+
+	  11160 root      20   0       0      0      0 I   2,0   0,0   0:01.32 kworker+
 	   
 ### Выводы:
 
