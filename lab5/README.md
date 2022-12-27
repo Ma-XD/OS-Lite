@@ -16,83 +16,84 @@
 	  
 #### Размер массива перед падением
 
-* Size=**54000000**
+* Size=**58000000**
 
 #### Последние записи в системном журнале	  
 	  
-	[ 9060.994841] oom-kill:
+	[ 4613.764556] oom-kill:
 	constraint=CONSTRAINT_NONE,
 	nodemask=(null),
 	cpuset=/,
 	mems_allowed=0,
 	global_oom,
-	task_memcg=/user.slice/user-1000.slice/user@1000.service/app.slice/app-org.gnome.Terminal.slice/vte-spawn-cd032f06-7fc2-49ba-ba99-f8cac1aeb816.scope,
+	task_memcg=/user.slice/user-1000.slice/user@1000.service/app.slice/app-org.gnome.Terminal.slice/vte-spawn-8a3864e7-404c-47a6-b149-f333c63228a5.scope,
 	task=bash,
-	pid=7534,
+	pid=10513,
 	uid=0
 	
-	[ 9060.994859] Out of memory:Killed process 7534 (bash)
-	total-vm:4247244kB,
-	anon-rss:3183412kB, 
+	[ 4613.764570] Out of memory: Killed process 10513 (bash) 
+	total-vm:4609188kB, 
+	anon-rss:3315632kB, 
 	file-rss:0kB, 
 	shmem-rss:0kB, 
 	UID:0 
-	pgtables:8340kB 
+	pgtables:9040kB 
 	oom_score_adj:0
 	
 #### Наблюдение за топ.
 
 * С начала работы скрипта сьедалась свободная физическая память. Сам скрипт находился в топе по памяти и процессорному времени. 
 
-	  МиБ Mem :   3924,0 total,   2697,5 free,    817,3 used,    409,3 buff/cache
-	  МиБ Swap:   1710,0 total,   1117,3 free,    592,7 used.   2800,9 avail Mem 
+	  МиБ Mem :   3924,0 total,   3072,8 free,    576,2 used,    275,0 buff/cache
+	  МиБ Swap:   1710,0 total,   1309,8 free,    400,2 used.   3090,5 avail Mem 
 
 	    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-	   5477 root      20   0  139404 124224   3312 R 100,0   3,1   0:08.22 bash
-	      1 root      20   0  166748   8416   5152 S   0,0   0,2   0:22.60 systemd
+	  10513 root      20   0   55188  39996   3300 R 100,0   1,0   0:02.42 bash
+	   7931 maxd      20   0 4375308 230352  77880 S   6,7   5,7   2:06.51 gnome-shell
+	      1 root      20   0  166628   5116   2464 S   0,0   0,1   0:08.41 systemd
 	      2 root      20   0       0      0      0 S   0,0   0,0   0:00.00 kthreadd
 	      3 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_gp
-	      4 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_par+
 
 * Когда свободная физическаяпамять заканчивалась (достигла 100 МиБ), начинала уменьшаться память раздела подкачки.
 
-	  МиБ Mem :   3924,0 total,    103,6 free,   3689,3 used,    131,2 buff/cache
-	  МиБ Swap:   1710,0 total,    958,9 free,    751,1 used.     28,8 avail Mem 
+	  МиБ Mem :   3924,0 total,    101,0 free,   3637,8 used,    185,2 buff/cache
+	  МиБ Swap:   1710,0 total,   1287,8 free,    422,2 used.     57,7 avail Mem 
 
 	    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-	   5477 root      20   0 3187680   3,0g   2644 R  93,8  77,2   3:34.91 bash
-	      1 root      20   0  166748   6760   3524 S   0,0   0,2   0:22.60 systemd
+	  10513 root      20   0 3210384   3,0g   2648 R  93,8  79,5   3:26.43 bash
+	      1 root      20   0  166628   4616   2216 S   0,0   0,1   0:08.41 systemd
 	      2 root      20   0       0      0      0 S   0,0   0,0   0:00.00 kthreadd
 	      3 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_gp
-	      4 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_par+p
+	      4 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_par_gp
 		
 
 
 * После расхода всей свободной памяти из swap в топ по процессорному времени влез kswapd0 и сместил наш скрипт (отвечает за процесс swap) 
 
-	  МиБ Mem :   3924,0 total,     91,1 free,   3762,2 used,     70,8 buff/cache
-	  МиБ Swap:   1710,0 total,      0,0 free,   1710,0 used.     27,1 avail Mem 
+	  МиБ Mem :   3924,0 total,     88,5 free,   3760,2 used,     75,3 buff/cache
+	  МиБ Swap:   1710,0 total,      0,0 free,   1710,0 used.     23,0 avail Mem 
 
 	    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-	     91 root      20   0       0      0      0 R  88,9   0,0 142:52.33 kswapd0
-	   5477 root      20   0 4202232   3,0g    608 R  44,4  79,0   4:44.92 bash
-	    468 systemd+  20   0   14956    624      0 D   5,6   0,0   0:26.38 systemd+
-	   1652 maxd      20   0  162224    224      0 S   5,6   0,0   0:19.36 VBoxCli+
-	      1 root      20   0  166748   3236      0 S   0,0   0,1   0:22.61 systemd
+	     91 root      20   0       0      0      0 R 100,0   0,0   4:37.01 kswapd0
+	  10513 root      20   0 4602192   3,2g    416 R  83,3  82,3   4:59.97 bash
+	   8067 maxd      20   0  897064  35004   9840 D  16,7   0,9   0:49.29 nautilus
+	   1080 root      20   0  305340     32      0 S   5,6   0,0   0:06.13 VBoxService
+	      1 root      20   0  166628   2312      0 S   0,0   0,1   0:08.41 systemd
 
 	
 	    
-* Последние данные из топ с нашим скриптом. После этого он был убит.
+* Последние данные из топ с нашим скриптом. После этого он был аварийно завершен.
 
-	  МиБ Mem :   3924,0 total,    956,1 free,   2819,3 used,    148,6 buff/cache
-	  МиБ Swap:   1710,0 total,   1020,6 free,    689,4 used.    890,9 avail Mem 
+	  МиБ Mem :   3924,0 total,   3324,1 free,    455,9 used,    144,0 buff/cache
+	  МиБ Swap:   1710,0 total,   1197,9 free,    512,1 used.   3260,5 avail Mem 
 
 	    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-	   7534 root      20   0       0      0      0 R  53,3   0,0   4:38.41 bash
-	   1339 maxd      20   0  309064   2096   1128 S  20,0   0,1   0:00.40 snapd-desktop-i
-	     91 root      20   0       0      0      0 S  13,3   0,0   5:20.25 kswapd0
-	   1262 maxd      20   0 4854388 294420  55500 R  13,3   7,3   7:38.38 gnome-shell
-	   1501 maxd      20   0  393064   1472   1108 S  13,3   0,0   0:00.02 gsd-rfkill
+	   7931 maxd      20   0 4375328 196856  60284 D  26,7   4,9   2:13.59 gnome-shell
+	      9 root       0 -20       0      0      0 I   6,7   0,0   0:04.96 kworker/0:1H-kblockd
+	   8067 maxd      20   0  897064  42356  17204 S   6,7   1,1   0:52.64 nautilus
+	  11312 root      20   0   21792   3852   3272 R   6,7   0,1   0:00.37 top
+	      1 root      20   0  166628   4664   2424 S   0,0   0,1   0:08.49 systemd
+
 	   
 ### Второй этап
 
