@@ -1,15 +1,20 @@
 #!/bin/bash
 
+if [ $# != 1 ]
+then
+exit 1
+fi
+
+N=$1
 cnt=0
 arr=()
-echo > $PWD/report.log
 
 while true
 do
-  shift=$(($cnt % 100000))
-  if [[ $shift -eq 0 ]]
+  if [[ ${#arr[*]} -gt $N ]] 
   then
-    echo ${#arr[*]} >> $PWD/report.log
+    echo STOP
+    exit 0
   fi
 
   size=${#arr[*]}

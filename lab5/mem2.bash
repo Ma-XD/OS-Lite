@@ -1,4 +1,4 @@
-#!/bin/bashs
+#!/bin/bash
 
 cnt=0
 arr=()
@@ -20,4 +20,3 @@ do
   cnt=$((cnt + 1))
 done
 
-kill p
